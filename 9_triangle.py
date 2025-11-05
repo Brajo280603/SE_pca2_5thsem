@@ -1,30 +1,33 @@
 import math
 
-sides = input("Enter the side lengths separated by commas : ")
+def area_triag():
+    sides_input = input("Enter the 3 side lengths (e.g., 3,4,5): ")
+    sides_str = sides_input.split(',')
 
-sides = sides.split(",")
+    if len(sides_str) != 3:
+        print("Error: Please enter exactly three side lengths separated by commas.")
+        return
 
-if(len(sides) > 3):
-    print("more than 3 sides entered")
+    try:
+        a, b, c = [float(s.strip()) for s in sides_str]
+    except ValueError:
+        print("Error: All inputs must be valid numbers.")
+        return
+
+    if a <= 0 or b <= 0 or c <= 0:
+        print("Error: Side lengths must be positive numbers.")
+        return
+
+    if not (a + b > c and a + c > b and b + c > a):
+        print(f"Error: Sides {a}, {b}, {c} do not form a valid triangle (Inequality violated).")
+        return
+
+    s = (a + b + c) / 2
+    area_squared = s * (s - a) * (s - b) * (s - c)
+
+    area = math.sqrt(max(0, area_squared))
+
+    print(f"Semi-perimeter (s): {s:.2f}")
+    print(f"Area of the triangle: {area:.2f}")
     
-# using heron's formula to compute area of triangle
-semi_perim = 0
-for i in range(0,len(sides)):
-    sides[i] = float(sides[i])
-    
-    semi_perim = semi_perim + sides[i]
-
-
-semi_perim = semi_perim / 2
-
-area = 1
-
-for i in range(0,len(sides)):
-    temp = semi_perim - sides[i]
-    area = area * temp
-    
-area = area * semi_perim
-
-area = math.sqrt(area)
-
-print(f"The area of the triangle is : {area}")
+area_triag()
